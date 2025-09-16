@@ -4,8 +4,7 @@ Ce projet est une implémentation d'un jeu de Morpion (Tic Tac Toe) dynamique et
 
 ➡️ Accéder à la démo en ligne (Pensez à héberger votre projet sur GitHub Pages ou un service similaire et à mettre le lien ici)
 
-![alt text](LIEN_VERS_UNE_IMAGE_OU_UN_GIF)
-(Il est fortement recommandé d'ajouter un visuel pour présenter votre travail)
+![Aperçu du jeu](assets/images/matrice.png)
 
 ## Table des matières
 
