@@ -10,21 +10,43 @@ let currentPlayer = "X";
 
 function playTurn(row, col) {
     if (board[row][col] === '') {
-        // Placer le symbole
+        // Place the symbol on the board
         board[row][col] = currentPlayer;
-        console.log(`Le joueur ${currentPlayer} a joué en [${row}, ${col}]`);
+        console.log(`Player ${currentPlayer} played at [${row}, ${col}]`);
 
-        // Changer de joueur
+        // Update the UI
+        updateBoard();
+        updateStatus();
+
+        // Switch player
         currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
         
-        console.log("Prochain joueur :", currentPlayer);
+        console.log("Next player:", currentPlayer);
         console.table(board);
+        return true;
     } else {
-        console.log("Case déjà prise ! Essayez une autre.");
+        console.log("Cell already taken! Try another one.");
+        return false;
     }
 }
 
-playTurn(0,0);
-playTurn(1,1);
-playTurn(0,1);
-playTurn(0,0);  
+function updateBoard() {
+    const cells = document.querySelectorAll('.cell');
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            const cellIndex = i * 3 + j;
+            cells[cellIndex].textContent = board[i][j];
+        }
+    }
+}
+
+function updateStatus() {
+    const statusElement = document.getElementById('status');
+    statusElement.textContent = `${currentPlayer}'s turn`;
+}
+
+function handleCellClick(cellIndex) {
+    const row = Math.floor(cellIndex / 3);
+    const col = cellIndex % 3;
+    playTurn(row, col);
+}  
