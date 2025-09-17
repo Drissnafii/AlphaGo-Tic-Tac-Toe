@@ -25,7 +25,14 @@ function updateBoard() {
 
 function updateStatus() {
     const statusElement = document.getElementById('status');
-    statusElement.textContent = `${currentPlayer}'s turn`;
+    const symbols = getPlayerSymbols();
+    
+    // Show whose turn it is
+    if (currentPlayer === symbols.player) {
+        statusElement.textContent = `Votre tour (${symbols.player})`;
+    } else {
+        statusElement.textContent = `Tour de l'adversaire (${symbols.computer})`;
+    }
 }
 
 function generateGameBoard(size) {

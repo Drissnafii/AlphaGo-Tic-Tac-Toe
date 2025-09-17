@@ -2,6 +2,8 @@
 let gridSize = 3; // Default 3x3
 let board = createEmptyBoard(gridSize);
 let currentPlayer = "X";
+let playerSymbol = "X"; // Player's chosen symbol
+let computerSymbol = "O"; // Computer's symbol (opposite of player)
 
 // Create empty board of any size
 function createEmptyBoard(size) {
@@ -20,6 +22,22 @@ function validateGridSize(size) {
     return size >= 3 && size <= 6;
 }
 
+// Set player symbol preference
+function setPlayerSymbol(symbol) {
+    playerSymbol = symbol;
+    computerSymbol = (symbol === 'X') ? 'O' : 'X';
+    currentPlayer = playerSymbol; // Player always starts first
+    saveGameState();
+}
+
+// Get current player symbols
+function getPlayerSymbols() {
+    return {
+        player: playerSymbol,
+        computer: computerSymbol
+    };
+}
+
 // Resize board to new size
 function resizeBoard(newSize) {
     if (!validateGridSize(newSize)) {
@@ -28,7 +46,7 @@ function resizeBoard(newSize) {
     
     gridSize = newSize;
     board = createEmptyBoard(gridSize);
-    currentPlayer = "X";
+    currentPlayer = playerSymbol; // Reset to player's symbol
     clearGameState();
     return true;
 }
@@ -39,8 +57,8 @@ function playTurn(row, col) {
         // Place the symbol on the board
         board[row][col] = currentPlayer;
 
-        // Switch player
-        currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
+        // Switch player (between player and computer symbols)
+        currentPlayer = (currentPlayer === playerSymbol) ? computerSymbol : playerSymbol;
         
         // Save game state to localStorage
         saveGameState();
@@ -56,7 +74,9 @@ function saveGameState() {
     const gameState = {
         board: board,
         currentPlayer: currentPlayer,
-        gridSize: gridSize
+        gridSize: gridSize,
+        playerSymbol: playerSymbol,
+        computerSymbol: computerSymbol
     };
     localStorage.setItem('ticTacToeGame', JSON.stringify(gameState));
 }
@@ -68,6 +88,8 @@ function loadGameState() {
         board = gameState.board;
         currentPlayer = gameState.currentPlayer;
         gridSize = gameState.gridSize || 3; // Default to 3 if not saved
+        playerSymbol = gameState.playerSymbol || 'X'; // Default to X if not saved
+        computerSymbol = gameState.computerSymbol || 'O'; // Default to O if not saved
         return true;
     }
     return false;
@@ -82,8 +104,8 @@ function restartGame() {
     // Reset board to empty state with current grid size
     board = createEmptyBoard(gridSize);
     
-    // Reset to player X
-    currentPlayer = "X";
+    // Reset to player's chosen symbol
+    currentPlayer = playerSymbol;
     
     // Clear localStorage
     clearGameState();

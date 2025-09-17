@@ -29,6 +29,13 @@ function handleRestartClick() {
     updateStatus();
 }
 
+// Symbol selection change
+function handleSymbolChange() {
+    const selectedSymbol = document.querySelector('input[name="player-symbol"]:checked').value;
+    setPlayerSymbol(selectedSymbol);
+    updateStatus();
+}
+
 // Grid size change
 function handleGridSizeChange() {
     const input = document.getElementById('grid-size-input');
@@ -56,6 +63,12 @@ function initializeGame() {
     // Load saved game state if available
     const stateLoaded = loadGameState();
     
+    // Update symbol selection radio buttons based on loaded state
+    const playerSymbolRadio = document.querySelector(`input[name="player-symbol"][value="${playerSymbol}"]`);
+    if (playerSymbolRadio) {
+        playerSymbolRadio.checked = true;
+    }
+    
     // Generate board based on current grid size
     generateGameBoard(gridSize);
     
@@ -69,6 +82,12 @@ function initializeGame() {
     // Add grid size change event listener
     const applySizeBtn = document.getElementById('apply-size-btn');
     applySizeBtn.addEventListener('click', handleGridSizeChange);
+    
+    // Add symbol selection change event listeners
+    const symbolRadios = document.querySelectorAll('input[name="player-symbol"]');
+    symbolRadios.forEach(radio => {
+        radio.addEventListener('change', handleSymbolChange);
+    });
     
     // Update grid size input to match current size
     const gridSizeInput = document.getElementById('grid-size-input');
