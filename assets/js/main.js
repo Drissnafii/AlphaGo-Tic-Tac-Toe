@@ -1,60 +1,80 @@
 // Initialize the game when the page loads
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Game initialized!");
     initializeGame();
 });
 
-// Bridge function between UI events and game logic
 function handleCellClick(cellIndex) {
-    const row = Math.floor(cellIndex / 3);
-    const col = cellIndex % 3;
+    const row = Math.floor(cellIndex / gridSize);
+    const col = cellIndex % gridSize;
     
-    // Call pure game logic
+    // Game logic
     const moveSuccessful = playTurn(row, col);
     
-    // Update UI if move was successful
+    // Update UI
     if (moveSuccessful) {
         updateBoard();
         updateStatus();
     }
 }
 
-// Bridge function for restart button
+// Restart button
 function handleRestartClick() {
-    // Call pure game logic
+    // Game logic
     restartGame();
     
     // Update UI
+    generateGameBoard(gridSize);
+    setupCellListeners();
     updateBoard();
     updateStatus();
+}
+
+// Grid size change
+function handleGridSizeChange() {
+    const input = document.getElementById('grid-size-input');
+    const newSize = parseInt(input.value);
+    
+    if (resizeBoard(newSize)) {
+        generateGameBoard(gridSize);
+        setupCellListeners();
+        updateBoard();
+        updateStatus();
+    }
+}
+
+// Setup event listeners for all cells
+function setupCellListeners() {
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach((cell, index) => {
+        cell.addEventListener('click', function() {
+            handleCellClick(index);
+        });
+    });
 }
 
 function initializeGame() {
     // Load saved game state if available
     const stateLoaded = loadGameState();
     
-    const cells = document.querySelectorAll('.cell');
+    // Generate board based on current grid size
+    generateGameBoard(gridSize);
     
-    // Add click event listeners to all cells
-    cells.forEach((cell, index) => {
-        console.log(cell);
-        console.log(index);
-        cell.addEventListener('click', function() {
-            handleCellClick(index);
-        });
-    });
+    // Setup event listeners
+    setupCellListeners();
     
     // Add restart button event listener
     const restartBtn = document.getElementById('restart-btn');
     restartBtn.addEventListener('click', handleRestartClick);
     
-    // Update display+status
+    // Add grid size change event listener
+    const applySizeBtn = document.getElementById('apply-size-btn');
+    applySizeBtn.addEventListener('click', handleGridSizeChange);
+    
+    // Update grid size input to match current size
+    const gridSizeInput = document.getElementById('grid-size-input');
+    gridSizeInput.value = gridSize;
+    
+    // Update display
     updateBoard();
     updateStatus();
-    
-    if (stateLoaded) {
-        console.log("Game resumed from saved state");
-    } else {
-        console.log("Starting new game");
-    }
 }

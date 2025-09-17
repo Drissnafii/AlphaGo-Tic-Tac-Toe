@@ -1,20 +1,43 @@
-console.log("the game is loading...");
-
-// Game state variables - pure logic
-let board = [
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', '']
-];
-
+// pure logic
+let gridSize = 3; // Default 3x3
+let board = createEmptyBoard(gridSize);
 let currentPlayer = "X";
+
+// Create empty board of any size
+function createEmptyBoard(size) {
+    const newBoard = [];
+    for (let i = 0; i < size; i++) {
+        newBoard[i] = [];
+        for (let j = 0; j < size; j++) {
+            newBoard[i][j] = '';
+        }
+    }
+    return newBoard;
+}
+
+// Validate grid size (3-6)
+function validateGridSize(size) {
+    return size >= 3 && size <= 6;
+}
+
+// Resize board to new size
+function resizeBoard(newSize) {
+    if (!validateGridSize(newSize)) {
+        return false;
+    }
+    
+    gridSize = newSize;
+    board = createEmptyBoard(gridSize);
+    currentPlayer = "X";
+    clearGameState();
+    return true;
+}
 
 // Pure game logic - no DOM manipulation
 function playTurn(row, col) {
     if (board[row][col] === '') {
         // Place the symbol on the board
         board[row][col] = currentPlayer;
-        console.log(`Player ${currentPlayer} played at [${row}, ${col}]`);
 
         // Switch player
         currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
@@ -22,11 +45,8 @@ function playTurn(row, col) {
         // Save game state to localStorage
         saveGameState();
         
-        console.log("Next player:", currentPlayer);
-        console.table(board);
         return true;
     } else {
-        console.log("Cell already taken! Try another one.");
         return false;
     }
 }
@@ -35,10 +55,10 @@ function playTurn(row, col) {
 function saveGameState() {
     const gameState = {
         board: board,
-        currentPlayer: currentPlayer
+        currentPlayer: currentPlayer,
+        gridSize: gridSize
     };
     localStorage.setItem('ticTacToeGame', JSON.stringify(gameState));
-    console.log("Game state saved to localStorage");
 }
 
 function loadGameState() {
@@ -47,34 +67,24 @@ function loadGameState() {
         const gameState = JSON.parse(savedState);
         board = gameState.board;
         currentPlayer = gameState.currentPlayer;
-        console.log("Game state loaded from localStorage");
-        console.table(board);
+        gridSize = gameState.gridSize || 3; // Default to 3 if not saved
         return true;
     }
-    console.log("No saved game state found");
     return false;
 }
 
 function clearGameState() {
     localStorage.removeItem('ticTacToeGame');
-    console.log("Game state cleared from localStorage");
 }
 
-// Restart game function - resets to initial state
+// Restart game function - resets to current grid size
 function restartGame() {
-    // Reset board to empty state
-    board = [
-        ['', '', ''],
-        ['', '', ''],
-        ['', '', '']
-    ];
+    // Reset board to empty state with current grid size
+    board = createEmptyBoard(gridSize);
     
     // Reset to player X
     currentPlayer = "X";
     
     // Clear localStorage
     clearGameState();
-    
-    console.log("Game restarted!");
-    console.table(board);
 }  

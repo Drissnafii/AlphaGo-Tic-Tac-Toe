@@ -2,10 +2,23 @@
 
 function updateBoard() {
     const cells = document.querySelectorAll('.cell');
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            const cellIndex = i * 3 + j;
-            cells[cellIndex].textContent = board[i][j];
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            const cellIndex = i * gridSize + j;
+            if (cells[cellIndex]) {
+                const cellValue = board[i][j];
+                cells[cellIndex].textContent = cellValue;
+                
+                // Remove previous classes
+                cells[cellIndex].classList.remove('cell-x', 'cell-o');
+                
+                // Add appropriate class based on cell value
+                if (cellValue === 'X') {
+                    cells[cellIndex].classList.add('cell-x');
+                } else if (cellValue === 'O') {
+                    cells[cellIndex].classList.add('cell-o');
+                }
+            }
         }
     }
 }
@@ -13,4 +26,19 @@ function updateBoard() {
 function updateStatus() {
     const statusElement = document.getElementById('status');
     statusElement.textContent = `${currentPlayer}'s turn`;
+}
+
+function generateGameBoard(size) {
+    const gameBoard = document.getElementById('game-board');
+    
+    gameBoard.innerHTML = '';
+    
+    for (let i = 0; i < size * size; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        gameBoard.appendChild(cell);
+    }
+    
+    gameBoard.style.gridTemplateColumns = `repeat(${size}, 100px)`;
+    gameBoard.style.gridTemplateRows = `repeat(${size}, 100px)`;
 }
