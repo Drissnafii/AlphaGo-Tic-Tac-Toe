@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeGame() {
+    const stateLoaded = loadGameState();
+    
     const cells = document.querySelectorAll('.cell');
     
     cells.forEach((cell, index) => {
@@ -13,6 +15,13 @@ function initializeGame() {
         });
     });
     
+    // Update display+status
     updateBoard();
     updateStatus();
+    
+    if (stateLoaded) {
+        console.log("Game resumed from saved state");
+    } else {
+        console.log("Starting new game");
+    }
 }

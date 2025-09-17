@@ -21,6 +21,9 @@ function playTurn(row, col) {
         // Switch player
         currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
         
+        // Save game state to localStorage
+        saveGameState();
+        
         console.log("Next player:", currentPlayer);
         console.table(board);
         return true;
@@ -49,4 +52,33 @@ function handleCellClick(cellIndex) {
     const row = Math.floor(cellIndex / 3);
     const col = cellIndex % 3;
     playTurn(row, col);
+}
+
+// localStorage functions
+function saveGameState() {
+    const gameState = {
+        board: board,
+        currentPlayer: currentPlayer
+    };
+    localStorage.setItem('ticTacToeGame', JSON.stringify(gameState));
+    console.log("Game state saved to localStorage");
+}
+
+function loadGameState() {
+    const savedState = localStorage.getItem('ticTacToeGame');
+    if (savedState) {
+        const gameState = JSON.parse(savedState);
+        board = gameState.board;
+        currentPlayer = gameState.currentPlayer;
+        console.log("Game state loaded from localStorage");
+        console.table(board);
+        return true;
+    }
+    console.log("No saved game state found");
+    return false;
+}
+
+function clearGameState() {
+    localStorage.removeItem('ticTacToeGame');
+    console.log("Game state cleared from localStorage");
 }  
