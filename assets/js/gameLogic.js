@@ -1,5 +1,6 @@
 console.log("the game is loading...");
 
+// Game state variables - pure logic
 let board = [
     ['', '', ''],
     ['', '', ''],
@@ -8,15 +9,12 @@ let board = [
 
 let currentPlayer = "X";
 
+// Pure game logic - no DOM manipulation
 function playTurn(row, col) {
     if (board[row][col] === '') {
         // Place the symbol on the board
         board[row][col] = currentPlayer;
         console.log(`Player ${currentPlayer} played at [${row}, ${col}]`);
-
-        // Update the UI
-        updateBoard();
-        updateStatus();
 
         // Switch player
         currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
@@ -33,28 +31,7 @@ function playTurn(row, col) {
     }
 }
 
-function updateBoard() {
-    const cells = document.querySelectorAll('.cell');
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            const cellIndex = i * 3 + j;
-            cells[cellIndex].textContent = board[i][j];
-        }
-    }
-}
-
-function updateStatus() {
-    const statusElement = document.getElementById('status');
-    statusElement.textContent = `${currentPlayer}'s turn`;
-}
-
-function handleCellClick(cellIndex) {
-    const row = Math.floor(cellIndex / 3);
-    const col = cellIndex % 3;
-    playTurn(row, col);
-}
-
-// localStorage functions
+// localStorage functions - data persistence logic
 function saveGameState() {
     const gameState = {
         board: board,
@@ -81,4 +58,23 @@ function loadGameState() {
 function clearGameState() {
     localStorage.removeItem('ticTacToeGame');
     console.log("Game state cleared from localStorage");
+}
+
+// Restart game function - resets to initial state
+function restartGame() {
+    // Reset board to empty state
+    board = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ];
+    
+    // Reset to player X
+    currentPlayer = "X";
+    
+    // Clear localStorage
+    clearGameState();
+    
+    console.log("Game restarted!");
+    console.table(board);
 }  
