@@ -33,7 +33,7 @@ function validateKAlignment(k) {
 function setKAlignment(k) {
     if (!validateKAlignment(k)) {
         return false;
-    }
+    }       
     kAlignment = k;
     gameWon = false;
     winner = null;

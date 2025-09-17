@@ -135,12 +135,25 @@ function generateGameBoard(size) {
     
     gameBoard.innerHTML = '';
     
+    // Calculate cell size based on fixed board size
+    // Board is 400px x 400px with 10px padding on each side = 380px available space
+    // Gap between cells is 3px, so we need to account for (size-1) gaps
+    const availableSpace = 380;
+    const totalGapSpace = (size - 1) * 3; // 3px gap between cells
+    const cellSize = Math.floor((availableSpace - totalGapSpace) / size);
+    
+    // Calculate font size based on cell size (proportional scaling)
+    const fontSize = Math.max(Math.floor(cellSize * 0.6), 16); // Minimum 16px font
+    
     for (let i = 0; i < size * size; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
+        cell.style.width = `${cellSize}px`;
+        cell.style.height = `${cellSize}px`;
+        cell.style.fontSize = `${fontSize}px`;
         gameBoard.appendChild(cell);
     }
     
-    gameBoard.style.gridTemplateColumns = `repeat(${size}, 100px)`;
-    gameBoard.style.gridTemplateRows = `repeat(${size}, 100px)`;
+    gameBoard.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
+    gameBoard.style.gridTemplateRows = `repeat(${size}, ${cellSize}px)`;
 }

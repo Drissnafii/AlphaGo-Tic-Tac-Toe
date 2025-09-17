@@ -1,34 +1,51 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    height: 100vh;
 }
 
-h1 {
-    color: #333;
-    position: absolute;
-    top: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0;
+.game-container {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
 #game-board {
     display: grid;
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(3, 100px);
-    gap: 5px;   
+    gap: 3px;   
     background-color: #333;
     border: 5px solid #333;
+    width: 400px;
+    height: 400px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .cell {
-    width: 100px;
-    height: 100px;
     background: #fff;
     display: flex;
     justify-content: center;
@@ -36,6 +53,7 @@ h1 {
     font-size: 3rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    border-radius: 4px;
 }
 .cell:hover {
     background-color: #ddd;
@@ -88,34 +106,34 @@ h1 {
 }
 
 #status {
-    margin-top: 20px;
     font-size: 1.5em;
     color: #444;
+    text-align: center;
+    margin: 0;
 }
 
 #symbol-selection {
-    margin-top: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 #symbol-selection > label {
     color: #333;
-    font-size: 18px;
+    font-size: 16px;
     font-style: italic;
     font-weight: 500;
-    margin-bottom: 8px;
+    text-align: center;
 }
 
 .symbol-options {
     display: flex;
     gap: 20px;
-    padding: 10px;
+    padding: 12px;
     border: 2px solid #333;
     border-radius: 25px;
     background-color: white;
+    justify-content: center;
 }
 
 .symbol-choice {
@@ -154,7 +172,7 @@ h1 {
 
 .symbol-choice label {
     color: #333;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     cursor: pointer;
     user-select: none;
@@ -169,35 +187,31 @@ h1 {
 }
 
 #grid-controls {
-    margin-top: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 #grid-controls label {
     color: #333;
-    font-size: 18px;
+    font-size: 16px;
     font-style: italic;
     font-weight: 500;
-    margin-bottom: 8px;
+    text-align: center;
 }
 
 #k-alignment-controls {
-    margin-top: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 #k-alignment-controls label {
     color: #333;
-    font-size: 18px;
+    font-size: 16px;
     font-style: italic;
     font-weight: 500;
-    margin-bottom: 8px;
+    text-align: center;
 }
 
 .input-group {
@@ -291,7 +305,6 @@ h1 {
 }
 
 .md3-button {
-    margin-top: 20px;
     padding: 12px 24px;
     background-color: #333;
     color: white;
@@ -302,6 +315,8 @@ h1 {
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: Arial, sans-serif;
+    width: 100%;
+    text-align: center;
 }
 
 .md3-button:hover {
@@ -310,4 +325,22 @@ h1 {
 
 .md3-button:active {
     background-color: #222;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .game-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .controls-panel {
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    #game-board {
+        width: 350px;
+        height: 350px;
+    }
 }
