@@ -36,6 +36,23 @@ function handleSymbolChange() {
     updateStatus();
 }
 
+// K-alignment change
+function handleKAlignmentChange() {
+    const input = document.getElementById('k-alignment-input');
+    const newK = parseInt(input.value);
+    
+    if (setKAlignment(newK)) {
+        // Reset the game since k-alignment affects win conditions
+        restartGame();
+        generateGameBoard(gridSize);
+        setupCellListeners();
+        updateBoard();
+        updateStatus();
+    } else {
+        input.value = getKAlignment();
+    }
+}
+
 // Grid size change
 function handleGridSizeChange() {
     const input = document.getElementById('grid-size-input');
@@ -46,6 +63,15 @@ function handleGridSizeChange() {
         setupCellListeners();
         updateBoard();
         updateStatus();
+        
+        // Update k-alignment input max value and current value if needed
+        const kInput = document.getElementById('k-alignment-input');
+        kInput.max = gridSize;
+        if (getKAlignment() > gridSize) {
+            kInput.value = gridSize;
+        } else {
+            kInput.value = getKAlignment();
+        }
     }
 }
 
@@ -64,9 +90,9 @@ function initializeGame() {
     const stateLoaded = loadGameState();
     
     // Update symbol selection radio buttons based on loaded state
-    const playerSymbolRadio = document.querySelector(`input[name="player-symbol"][value="${playerSymbol}"]`);
-    if (playerSymbolRadio) {
-        playerSymbolRadio.checked = true;
+    const player1SymbolRadio = document.querySelector(`input[name="player-symbol"][value="${player1Symbol}"]`);
+    if (player1SymbolRadio) {
+        player1SymbolRadio.checked = true;
     }
     
     // Generate board based on current grid size
@@ -83,6 +109,10 @@ function initializeGame() {
     const applySizeBtn = document.getElementById('apply-size-btn');
     applySizeBtn.addEventListener('click', handleGridSizeChange);
     
+    // Add k-alignment change event listener
+    const applyKBtn = document.getElementById('apply-k-btn');
+    applyKBtn.addEventListener('click', handleKAlignmentChange);
+    
     // Add symbol selection change event listeners
     const symbolRadios = document.querySelectorAll('input[name="player-symbol"]');
     symbolRadios.forEach(radio => {
@@ -92,6 +122,11 @@ function initializeGame() {
     // Update grid size input to match current size
     const gridSizeInput = document.getElementById('grid-size-input');
     gridSizeInput.value = gridSize;
+    
+    // Update k-alignment input to match current k value and set max
+    const kAlignmentInput = document.getElementById('k-alignment-input');
+    kAlignmentInput.value = getKAlignment();
+    kAlignmentInput.max = gridSize;
     
     // Update display
     updateBoard();

@@ -26,12 +26,30 @@ function updateBoard() {
 function updateStatus() {
     const statusElement = document.getElementById('status');
     const symbols = getPlayerSymbols();
+    const gameStatus = getGameStatus();
+    const k = getKAlignment();
     
-    // Show whose turn it is
-    if (currentPlayer === symbols.player) {
-        statusElement.textContent = `Votre tour (${symbols.player})`;
+    // Check if game is won
+    if (gameStatus.gameWon) {
+        if (gameStatus.winner === symbols.player1) {
+            statusElement.textContent = `🎉 Joueur 1 (${gameStatus.winner}) gagne! 🎉`;
+        } else {
+            statusElement.textContent = `🎉 Joueur 2 (${gameStatus.winner}) gagne! 🎉`;
+        }
+        statusElement.style.color = '#2e7d32'; // Green color for win
+        statusElement.style.fontWeight = 'bold';
+        return;
+    }
+    
+    // Reset status styling for active game
+    statusElement.style.color = '#444';
+    statusElement.style.fontWeight = 'normal';
+    
+    // Show whose turn it is and k-alignment requirement
+    if (currentPlayer === symbols.player1) {
+        statusElement.textContent = `Tour du Joueur 1 (${symbols.player1}) - Alignez ${k} symboles pour gagner`;
     } else {
-        statusElement.textContent = `Tour de l'adversaire (${symbols.computer})`;
+        statusElement.textContent = `Tour du Joueur 2 (${symbols.player2}) - Alignez ${k} symboles pour gagner`;
     }
 }
 

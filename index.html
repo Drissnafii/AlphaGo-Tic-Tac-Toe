@@ -21,7 +21,7 @@
     <div id="status">X's turn</div>
     
     <div id="symbol-selection">
-        <label>Choisir votre symbole:</label>
+        <label>Choisir le symbole du Joueur 1:</label>
         <div class="symbol-options">
             <div class="symbol-choice">
                 <input type="radio" id="player-x" name="player-symbol" value="X" checked>
@@ -39,6 +39,14 @@
         <div class="input-group">
             <input type="number" id="grid-size-input" min="3" max="6" value="3" placeholder="3-6">
             <button id="apply-size-btn">Apply</button>
+        </div>
+    </div>
+
+    <div id="k-alignment-controls">
+        <label for="k-alignment-input">Alignements requis (k): </label>
+        <div class="input-group">
+            <input type="number" id="k-alignment-input" min="3" max="6" value="3" placeholder="3-6">
+            <button id="apply-k-btn">Apply</button>
         </div>
     </div>
     

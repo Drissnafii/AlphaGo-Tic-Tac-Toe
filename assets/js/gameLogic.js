@@ -2,10 +2,12 @@
 let gridSize = 3; // Default 3x3
 let board = createEmptyBoard(gridSize);
 let currentPlayer = "X";
-let playerSymbol = "X"; // Player's chosen symbol
-let computerSymbol = "O"; // Computer's symbol (opposite of player)
+let player1Symbol = "X"; // Player 1's chosen symbol
+let player2Symbol = "O"; // Player 2's symbol (opposite of player 1)
+let kAlignment = 3; // Number of symbols needed in a row to win
+let gameWon = false; // Track if game is won
+let winner = null; // Track who won
 
-// Create empty board of any size
 function createEmptyBoard(size) {
     const newBoard = [];
     for (let i = 0; i < size; i++) {
@@ -17,24 +19,135 @@ function createEmptyBoard(size) {
     return newBoard;
 }
 
-// Validate grid size (3-6)
+// Validate grid size
 function validateGridSize(size) {
     return size >= 3 && size <= 6;
 }
 
+function validateKAlignment(k) {
+    return k >= 3 && k <= gridSize;
+}
+
+// Set k-alignment value
+function setKAlignment(k) {
+    if (!validateKAlignment(k)) {
+        return false;
+    }
+    kAlignment = k;
+    gameWon = false;
+    winner = null;
+    saveGameState();
+    return true;
+}
+
+// Get current k-alignment value
+function getKAlignment() {
+    return kAlignment;
+}
+
 // Set player symbol preference
 function setPlayerSymbol(symbol) {
-    playerSymbol = symbol;
-    computerSymbol = (symbol === 'X') ? 'O' : 'X';
-    currentPlayer = playerSymbol; // Player always starts first
+    player1Symbol = symbol;
+    player2Symbol = (symbol === 'X') ? 'O' : 'X';
+    currentPlayer = player1Symbol; // Player 1 always starts first
     saveGameState();
 }
 
 // Get current player symbols
 function getPlayerSymbols() {
     return {
-        player: playerSymbol,
-        computer: computerSymbol
+        player1: player1Symbol,
+        player2: player2Symbol
+    };
+}
+
+// Check for k consecutive symbols in a row
+function checkWin(symbol) {
+    // Check rows
+    for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col <= gridSize - kAlignment; col++) {
+            let count = 0;
+            for (let i = 0; i < kAlignment; i++) {
+                if (board[row][col + i] === symbol) {
+                    count++;
+                } else {
+                    break;
+                }
+            }
+            if (count === kAlignment) return true;
+        }
+    }
+    
+    // Check columns
+    for (let col = 0; col < gridSize; col++) {
+        for (let row = 0; row <= gridSize - kAlignment; row++) {
+            let count = 0;
+            for (let i = 0; i < kAlignment; i++) {
+                if (board[row + i][col] === symbol) {
+                    count++;
+                } else {
+                    break;
+                }
+            }
+            if (count === kAlignment) return true;
+        }
+    }
+    
+    // _________________________________________________________________
+    // Check main diagonal (top-left to bottom-right)
+    for (let row = 0; row <= gridSize - kAlignment; row++) {
+        for (let col = 0; col <= gridSize - kAlignment; col++) {
+            let count = 0;
+            for (let i = 0; i < kAlignment; i++) {
+                if (board[row + i][col + i] === symbol) {
+                    count++;
+                } else {
+                    break;
+                }
+            }
+            if (count === kAlignment) return true;
+        }
+    }
+    
+    // _________________________________________________________________
+    // Check anti-diagonal (top-right to bottom-left)
+    for (let row = 0; row <= gridSize - kAlignment; row++) {
+        for (let col = kAlignment - 1; col < gridSize; col++) {
+            let count = 0;
+            for (let i = 0; i < kAlignment; i++) {
+                if (board[row + i][col - i] === symbol) {
+                    count++;
+                } else {
+                    break;
+                }
+            }
+            if (count === kAlignment) return true;
+        }
+    }
+    
+    return false;
+}
+
+// Check if game is won and by whom
+function checkGameWon() {
+    if (checkWin(player1Symbol)) {
+        gameWon = true;
+        winner = player1Symbol;
+        return true;
+    }
+    if (checkWin(player2Symbol)) {
+        gameWon = true;
+        winner = player2Symbol;
+        return true;
+    }
+    return false;
+}
+
+// Get game status
+function getGameStatus() {
+    return {
+        gameWon: gameWon,
+        winner: winner
     };
 }
 
@@ -45,28 +158,40 @@ function resizeBoard(newSize) {
     }
     
     gridSize = newSize;
+
+    if (kAlignment > gridSize) {
+        kAlignment = gridSize;
+    }
     board = createEmptyBoard(gridSize);
-    currentPlayer = playerSymbol; // Reset to player's symbol
+    currentPlayer = player1Symbol; // Reset to player 1's symbol
+    gameWon = false;
+    winner = null;
     clearGameState();
     return true;
 }
 
-// Pure game logic - no DOM manipulation
 function playTurn(row, col) {
-    if (board[row][col] === '') {
-        // Place the symbol on the board
-        board[row][col] = currentPlayer;
-
-        // Switch player (between player and computer symbols)
-        currentPlayer = (currentPlayer === playerSymbol) ? computerSymbol : playerSymbol;
-        
-        // Save game state to localStorage
-        saveGameState();
-        
-        return true;
-    } else {
+    // Don't allow moves if game is already won
+    if (gameWon || board[row][col] !== '') {
         return false;
     }
+    
+    // Place the symbol on the board
+    board[row][col] = currentPlayer;
+    
+    // Check if this move wins the game
+    if (checkWin(currentPlayer)) {
+        gameWon = true;
+        winner = currentPlayer;
+    } else {
+        // Switch player (between player 1 and player 2 symbols)
+        currentPlayer = (currentPlayer === player1Symbol) ? player2Symbol : player1Symbol;
+    }
+    
+    // Save game state to localStorage
+    saveGameState();
+    
+    return true;
 }
 
 // localStorage functions - data persistence logic
@@ -75,8 +200,11 @@ function saveGameState() {
         board: board,
         currentPlayer: currentPlayer,
         gridSize: gridSize,
-        playerSymbol: playerSymbol,
-        computerSymbol: computerSymbol
+        player1Symbol: player1Symbol,
+        player2Symbol: player2Symbol,
+        kAlignment: kAlignment,
+        gameWon: gameWon,
+        winner: winner
     };
     localStorage.setItem('ticTacToeGame', JSON.stringify(gameState));
 }
@@ -88,8 +216,11 @@ function loadGameState() {
         board = gameState.board;
         currentPlayer = gameState.currentPlayer;
         gridSize = gameState.gridSize || 3; // Default to 3 if not saved
-        playerSymbol = gameState.playerSymbol || 'X'; // Default to X if not saved
-        computerSymbol = gameState.computerSymbol || 'O'; // Default to O if not saved
+        player1Symbol = gameState.player1Symbol || 'X'; // Default to X if not saved
+        player2Symbol = gameState.player2Symbol || 'O'; // Default to O if not saved
+        kAlignment = gameState.kAlignment || 3; // Default to 3 if not saved
+        gameWon = gameState.gameWon || false;
+        winner = gameState.winner || null;
         return true;
     }
     return false;
@@ -104,8 +235,12 @@ function restartGame() {
     // Reset board to empty state with current grid size
     board = createEmptyBoard(gridSize);
     
-    // Reset to player's chosen symbol
-    currentPlayer = playerSymbol;
+    // Reset to player 1's chosen symbol
+    currentPlayer = player1Symbol;
+    
+    // Reset game status
+    gameWon = false;
+    winner = null;
     
     // Clear localStorage
     clearGameState();
