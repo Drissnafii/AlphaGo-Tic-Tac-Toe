@@ -29,14 +29,18 @@ function updateStatus() {
     const gameStatus = getGameStatus();
     const k = getKAlignment();
     
-    // Check if game is won
+    // Check if game is won or drawn
     if (gameStatus.gameWon) {
-        if (gameStatus.winner === symbols.player1) {
+        if (gameStatus.winner === 'draw') {
+            statusElement.textContent = `🤝 Match nul! Toutes les cases sont remplies 🤝`;
+            statusElement.style.color = '#ff9800'; // Orange color for draw
+        } else if (gameStatus.winner === symbols.player1) {
             statusElement.textContent = `🎉 Joueur 1 (${gameStatus.winner}) gagne! 🎉`;
+            statusElement.style.color = '#2e7d32'; // Green color for win
         } else {
             statusElement.textContent = `🎉 Joueur 2 (${gameStatus.winner}) gagne! 🎉`;
+            statusElement.style.color = '#2e7d32'; // Green color for win
         }
-        statusElement.style.color = '#2e7d32'; // Green color for win
         statusElement.style.fontWeight = 'bold';
         return;
     }

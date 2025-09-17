@@ -128,6 +128,18 @@ function checkWin(symbol) {
     return false;
 }
 
+// Check if board is full (all cells occupied)
+function isBoardFull() {
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            if (board[i][j] === '') {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 // Check if game is won and by whom
 function checkGameWon() {
     if (checkWin(player1Symbol)) {
@@ -138,6 +150,12 @@ function checkGameWon() {
     if (checkWin(player2Symbol)) {
         gameWon = true;
         winner = player2Symbol;
+        return true;
+    }
+    // Check for draw (board full with no winner)
+    if (isBoardFull()) {
+        gameWon = true;
+        winner = 'draw';
         return true;
     }
     return false;
@@ -179,10 +197,13 @@ function playTurn(row, col) {
     // Place the symbol on the board
     board[row][col] = currentPlayer;
     
-    // Check if this move wins the game
+    // Check if this move wins the game or if board is full
     if (checkWin(currentPlayer)) {
         gameWon = true;
         winner = currentPlayer;
+    } else if (isBoardFull()) {
+        gameWon = true;
+        winner = 'draw';
     } else {
         // Switch player (between player 1 and player 2 symbols)
         currentPlayer = (currentPlayer === player1Symbol) ? player2Symbol : player1Symbol;
