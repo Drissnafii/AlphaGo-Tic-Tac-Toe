@@ -10,7 +10,7 @@ function updateBoard() {
                 cells[cellIndex].textContent = cellValue;
                 
                 // Remove previous classes
-                cells[cellIndex].classList.remove('cell-x', 'cell-o');
+                cells[cellIndex].classList.remove('cell-x', 'cell-o', 'winning-cell');
                 
                 // Add appropriate class based on cell value
                 if (cellValue === 'X') {
@@ -21,6 +21,79 @@ function updateBoard() {
             }
         }
     }
+    
+    // Highlight winning line if game is won
+    if (getGameStatus().gameWon && getGameStatus().winner !== 'draw') {
+        highlightWinningLine();
+    }
+}
+
+// Highlight the winning line cells
+function highlightWinningLine() {
+    const winLine = getWinningLine();
+    if (!winLine) return;
+    
+    const cells = document.querySelectorAll('.cell');
+    
+    for (let i = 0; i < winLine.length; i++) {
+        let row, col;
+        
+        switch (winLine.direction) {
+            case 'horizontal':
+                row = winLine.startRow;
+                col = winLine.startCol + i;
+                break;
+            case 'vertical':
+                row = winLine.startRow + i;
+                col = winLine.startCol;
+                break;
+            case 'diagonal':
+                row = winLine.startRow + i;
+                col = winLine.startCol + i;
+                break;
+            case 'anti-diagonal':
+                row = winLine.startRow + i;
+                col = winLine.startCol - i;
+                break;
+        }
+        
+        const cellIndex = row * gridSize + col;
+        if (cells[cellIndex]) {
+            // Add winning class with a delay for animation effect
+            setTimeout(() => {
+                cells[cellIndex].classList.add('winning-cell');
+                // Add group hover event listeners
+                setupWinningLineHover(cells[cellIndex]);
+            }, i * 100); // Stagger the animation
+        }
+    }
+}
+
+// Setup group hover effect for winning line
+function setupWinningLineHover(cell) {
+    cell.addEventListener('mouseenter', () => {
+        // Add hover class to all winning cells
+        const allWinningCells = document.querySelectorAll('.winning-cell');
+        allWinningCells.forEach(winCell => {
+            winCell.classList.add('line-hover');
+        });
+    });
+    
+    cell.addEventListener('mouseleave', () => {
+        // Remove hover class from all winning cells
+        const allWinningCells = document.querySelectorAll('.winning-cell');
+        allWinningCells.forEach(winCell => {
+            winCell.classList.remove('line-hover');
+        });
+    });
+}
+
+// Clear all winning highlights
+function clearWinningHighlight() {
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+        cell.classList.remove('winning-cell');
+    });
 }
 
 function updateStatus() {

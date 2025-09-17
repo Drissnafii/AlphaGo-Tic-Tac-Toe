@@ -7,6 +7,7 @@ let player2Symbol = "O"; // Player 2's symbol (opposite of player 1)
 let kAlignment = 3; // Number of symbols needed in a row to win
 let gameWon = false; // Track if game is won
 let winner = null; // Track who won
+let winningLine = null; // Store winning line coordinates
 
 function createEmptyBoard(size) {
     const newBoard = [];
@@ -36,6 +37,7 @@ function setKAlignment(k) {
     kAlignment = k;
     gameWon = false;
     winner = null;
+    winningLine = null;
     saveGameState();
     return true;
 }
@@ -61,7 +63,12 @@ function getPlayerSymbols() {
     };
 }
 
-// Check for k consecutive symbols in a row
+// Get winning line coordinates
+function getWinningLine() {
+    return winningLine;
+}
+
+// Check for k consecutive symbols in a row and return winning line
 function checkWin(symbol) {
     // Check rows
     for (let row = 0; row < gridSize; row++) {
@@ -74,7 +81,15 @@ function checkWin(symbol) {
                     break;
                 }
             }
-            if (count === kAlignment) return true;
+            if (count === kAlignment) {
+                winningLine = {
+                    startRow: row,
+                    startCol: col,
+                    direction: 'horizontal',
+                    length: kAlignment
+                };
+                return true;
+            }
         }
     }
     
@@ -89,7 +104,15 @@ function checkWin(symbol) {
                     break;
                 }
             }
-            if (count === kAlignment) return true;
+            if (count === kAlignment) {
+                winningLine = {
+                    startRow: row,
+                    startCol: col,
+                    direction: 'vertical',
+                    length: kAlignment
+                };
+                return true;
+            }
         }
     }
     
@@ -105,7 +128,15 @@ function checkWin(symbol) {
                     break;
                 }
             }
-            if (count === kAlignment) return true;
+            if (count === kAlignment) {
+                winningLine = {
+                    startRow: row,
+                    startCol: col,
+                    direction: 'diagonal',
+                    length: kAlignment
+                };
+                return true;
+            }
         }
     }
     
@@ -121,7 +152,15 @@ function checkWin(symbol) {
                     break;
                 }
             }
-            if (count === kAlignment) return true;
+            if (count === kAlignment) {
+                winningLine = {
+                    startRow: row,
+                    startCol: col,
+                    direction: 'anti-diagonal',
+                    length: kAlignment
+                };
+                return true;
+            }
         }
     }
     
@@ -184,6 +223,7 @@ function resizeBoard(newSize) {
     currentPlayer = player1Symbol; // Reset to player 1's symbol
     gameWon = false;
     winner = null;
+    winningLine = null;
     clearGameState();
     return true;
 }
@@ -225,7 +265,8 @@ function saveGameState() {
         player2Symbol: player2Symbol,
         kAlignment: kAlignment,
         gameWon: gameWon,
-        winner: winner
+        winner: winner,
+        winningLine: winningLine
     };
     localStorage.setItem('ticTacToeGame', JSON.stringify(gameState));
 }
@@ -242,6 +283,7 @@ function loadGameState() {
         kAlignment = gameState.kAlignment || 3; // Default to 3 if not saved
         gameWon = gameState.gameWon || false;
         winner = gameState.winner || null;
+        winningLine = gameState.winningLine || null;
         return true;
     }
     return false;
@@ -262,6 +304,7 @@ function restartGame() {
     // Reset game status
     gameWon = false;
     winner = null;
+    winningLine = null;
     
     // Clear localStorage
     clearGameState();

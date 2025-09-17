@@ -19,6 +19,9 @@ function handleCellClick(cellIndex) {
 
 // Restart button
 function handleRestartClick() {
+    // Clear any winning highlights first
+    clearWinningHighlight();
+    
     // Game logic
     restartGame();
     
@@ -32,6 +35,10 @@ function handleRestartClick() {
 // Symbol selection change
 function handleSymbolChange() {
     const selectedSymbol = document.querySelector('input[name="player-symbol"]:checked').value;
+    
+    // Clear any winning highlights first
+    clearWinningHighlight();
+    
     setPlayerSymbol(selectedSymbol);
     updateStatus();
 }
@@ -42,6 +49,9 @@ function handleKAlignmentChange() {
     const newK = parseInt(input.value);
     
     if (setKAlignment(newK)) {
+        // Clear any winning highlights first
+        clearWinningHighlight();
+        
         // Reset the game since k-alignment affects win conditions
         restartGame();
         generateGameBoard(gridSize);
@@ -59,6 +69,9 @@ function handleGridSizeChange() {
     const newSize = parseInt(input.value);
     
     if (resizeBoard(newSize)) {
+        // Clear any winning highlights first
+        clearWinningHighlight();
+        
         generateGameBoard(gridSize);
         setupCellListeners();
         updateBoard();

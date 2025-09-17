@@ -59,6 +59,34 @@ h1 {
     background-color: #3f4a4a;
 }
 
+.cell.winning-cell {
+    background-color: #48804b !important;
+    box-shadow: 0 0 20px rgba(46, 125, 50, 0.6), 
+                inset 0 0 20px rgba(46, 125, 50, 0.3);
+    animation: winningGlow 1s ease-in-out;
+}
+
+.cell.winning-cell.line-hover {
+    background-color: #2e7d32 !important;
+}
+
+@keyframes winningGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(46, 125, 50, 0.8), 
+                    inset 0 0 20px rgba(46, 125, 50, 0.5);
+        transform: scale(1.08);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(46, 125, 50, 0.6), 
+                    inset 0 0 20px rgba(46, 125, 50, 0.3);
+        transform: scale(1.05);
+    }
+}
+
 #status {
     margin-top: 20px;
     font-size: 1.5em;
