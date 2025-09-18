@@ -9,6 +9,7 @@ let gameWon = false; // Track if game is won
 let winner = null; // Track who won
 let winningLine = null; // Store winning line coordinates
 
+// Private function
 function createEmptyBoard(size) {
     const newBoard = [];
     for (let i = 0; i < size; i++) {
@@ -20,20 +21,24 @@ function createEmptyBoard(size) {
     return newBoard;
 }
 
-// Validate grid size
+// Private function
 function validateGridSize(size) {
     return size >= 3 && size <= 6;
 }
 
+// Private function
 function validateKAlignment(k) {
     return k >= 3 && k <= gridSize;
 }
 
+
+// EXPORTED FUNCTIONS - Public API
+
 // Set k-alignment value
-function setKAlignment(k) {
+export function setKAlignment(k) {
     if (!validateKAlignment(k)) {
         return false;
-    }       
+    }
     kAlignment = k;
     gameWon = false;
     winner = null;
@@ -43,12 +48,25 @@ function setKAlignment(k) {
 }
 
 // Get current k-alignment value
-function getKAlignment() {
+export function getKAlignment() {
     return kAlignment;
 }
 
-// Set player symbol preference
-function setPlayerSymbol(symbol) {
+// Get current grid size
+export function getGridSize() {
+    return gridSize;
+}
+
+// Get current player
+export function getCurrentPlayer() {
+    return currentPlayer;
+}
+
+// Get current board state
+export function getBoard() {
+    return board;
+}// Set player symbol preference
+export function setPlayerSymbol(symbol) {
     player1Symbol = symbol;
     player2Symbol = (symbol === 'X') ? 'O' : 'X';
     currentPlayer = player1Symbol; // Player 1 always starts first
@@ -56,7 +74,7 @@ function setPlayerSymbol(symbol) {
 }
 
 // Get current player symbols
-function getPlayerSymbols() {
+export function getPlayerSymbols() {
     return {
         player1: player1Symbol,
         player2: player2Symbol
@@ -64,11 +82,11 @@ function getPlayerSymbols() {
 }
 
 // Get winning line coordinates
-function getWinningLine() {
+export function getWinningLine() {
     return winningLine;
 }
 
-// Check for k consecutive symbols in a row and return winning line
+// Check for k consecutive symbols in a row and return winning line - Private function
 function checkWin(symbol) {
     // Check rows
     for (let row = 0; row < gridSize; row++) {
@@ -167,7 +185,7 @@ function checkWin(symbol) {
     return false;
 }
 
-// Check if board is full (all cells occupied)
+// Check if board is full (all cells occupied) - Private function
 function isBoardFull() {
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
@@ -179,7 +197,7 @@ function isBoardFull() {
     return true;
 }
 
-// Check if game is won and by whom
+// Check if game is won and by whom - Private function
 function checkGameWon() {
     if (checkWin(player1Symbol)) {
         gameWon = true;
@@ -201,7 +219,7 @@ function checkGameWon() {
 }
 
 // Get game status
-function getGameStatus() {
+export function getGameStatus() {
     return {
         gameWon: gameWon,
         winner: winner
@@ -209,7 +227,7 @@ function getGameStatus() {
 }
 
 // Resize board to new size
-function resizeBoard(newSize) {
+export function resizeBoard(newSize) {
     if (!validateGridSize(newSize)) {
         return false;
     }
@@ -228,7 +246,7 @@ function resizeBoard(newSize) {
     return true;
 }
 
-function playTurn(row, col) {
+export function playTurn(row, col) {
     // Don't allow moves if game is already won
     if (gameWon || board[row][col] !== '') {
         return false;
@@ -271,7 +289,7 @@ function saveGameState() {
     localStorage.setItem('ticTacToeGame', JSON.stringify(gameState));
 }
 
-function loadGameState() {
+export function loadGameState() {
     const savedState = localStorage.getItem('ticTacToeGame');
     if (savedState) {
         const gameState = JSON.parse(savedState);
@@ -294,7 +312,7 @@ function clearGameState() {
 }
 
 // Restart game function - resets to current grid size
-function restartGame() {
+export function restartGame() {
     // Reset board to empty state with current grid size
     board = createEmptyBoard(gridSize);
     

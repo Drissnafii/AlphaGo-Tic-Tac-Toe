@@ -1,9 +1,31 @@
+// from gameLogic module
+import { 
+    playTurn, 
+    restartGame, 
+    setPlayerSymbol, 
+    setKAlignment, 
+    getKAlignment, 
+    resizeBoard, 
+    loadGameState, 
+    getGridSize, 
+    getPlayerSymbols 
+} from './gameLogic.js';
+
+// from ui module
+import { 
+    updateBoard, 
+    updateStatus, 
+    generateGameBoard, 
+    clearWinningHighlight 
+} from './ui.js';
+
 // Initialize the game when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     initializeGame();
 });
 
 function handleCellClick(cellIndex) {
+    const gridSize = getGridSize();
     const row = Math.floor(cellIndex / gridSize);
     const col = cellIndex % gridSize;
     
@@ -26,6 +48,7 @@ function handleRestartClick() {
     restartGame();
     
     // Update UI
+    const gridSize = getGridSize();
     generateGameBoard(gridSize);
     setupCellListeners();
     updateBoard();
@@ -54,6 +77,7 @@ function handleKAlignmentChange() {
         
         // Reset the game since k-alignment affects win conditions
         restartGame();
+        const gridSize = getGridSize();
         generateGameBoard(gridSize);
         setupCellListeners();
         updateBoard();
@@ -72,6 +96,7 @@ function handleGridSizeChange() {
         // Clear any winning highlights first
         clearWinningHighlight();
         
+        const gridSize = getGridSize();
         generateGameBoard(gridSize);
         setupCellListeners();
         updateBoard();
@@ -103,12 +128,14 @@ function initializeGame() {
     const stateLoaded = loadGameState();
     
     // Update symbol selection radio buttons based on loaded state
-    const player1SymbolRadio = document.querySelector(`input[name="player-symbol"][value="${player1Symbol}"]`);
+    const playerSymbols = getPlayerSymbols();
+    const player1SymbolRadio = document.querySelector(`input[name="player-symbol"][value="${playerSymbols.player1}"]`);
     if (player1SymbolRadio) {
         player1SymbolRadio.checked = true;
     }
     
     // Generate board based on current grid size
+    const gridSize = getGridSize();
     generateGameBoard(gridSize);
     
     // Setup event listeners

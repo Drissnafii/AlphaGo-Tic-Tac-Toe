@@ -1,7 +1,21 @@
-// UI functions / DOM manipulation.
+// UI functions / DOM manipulation - ES6 Module
 
-function updateBoard() {
+// Import functions from gameLogic module
+import { 
+    getGridSize, 
+    getBoard, 
+    getGameStatus, 
+    getWinningLine, 
+    getPlayerSymbols, 
+    getCurrentPlayer, 
+    getKAlignment 
+} from './gameLogic.js';
+
+export function updateBoard() {
     const cells = document.querySelectorAll('.cell');
+    const gridSize = getGridSize();
+    const board = getBoard();
+    
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
             const cellIndex = i * gridSize + j;
@@ -23,14 +37,16 @@ function updateBoard() {
     }
     
     // Highlight winning line if game is won
-    if (getGameStatus().gameWon && getGameStatus().winner !== 'draw') {
+    const gameStatus = getGameStatus();
+    if (gameStatus.gameWon && gameStatus.winner !== 'draw') {
         highlightWinningLine();
     }
 }
 
-// Highlight the winning line cells
+// Highlight the winning line cells - Private function
 function highlightWinningLine() {
     const winLine = getWinningLine();
+    const gridSize = getGridSize();
     if (!winLine) return;
     
     const cells = document.querySelectorAll('.cell');
@@ -69,7 +85,7 @@ function highlightWinningLine() {
     }
 }
 
-// Setup group hover effect for winning line
+// Setup group hover effect for winning line - Private function
 function setupWinningLineHover(cell) {
     cell.addEventListener('mouseenter', () => {
         // Add hover class to all winning cells
@@ -89,18 +105,19 @@ function setupWinningLineHover(cell) {
 }
 
 // Clear all winning highlights
-function clearWinningHighlight() {
+export function clearWinningHighlight() {
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
         cell.classList.remove('winning-cell');
     });
 }
 
-function updateStatus() {
+export function updateStatus() {
     const statusElement = document.getElementById('status');
     const symbols = getPlayerSymbols();
     const gameStatus = getGameStatus();
     const k = getKAlignment();
+    const currentPlayer = getCurrentPlayer();
     
     // Check if game is won or drawn
     if (gameStatus.gameWon) {
@@ -130,7 +147,7 @@ function updateStatus() {
     }
 }
 
-function generateGameBoard(size) {
+export function generateGameBoard(size) {
     const gameBoard = document.getElementById('game-board');
     
     gameBoard.innerHTML = '';
