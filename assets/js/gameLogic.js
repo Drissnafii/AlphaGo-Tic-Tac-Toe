@@ -9,7 +9,7 @@ let kAlignment = 3; // Number of symbols needed in a row to win
 let gameWon = false; // Track if game is won
 let winner = null; // Track who won
 let winningLine = null; // Store winning line coordinates
-let scores = { 'X': 0, 'O': 0 }; // Track wins for each symbol
+let scores = { 'X': 0, 'O': 0, 'draw': 0 }; // Track wins for each symbol and draws
 
 // Private function
 function createEmptyBoard(size) {
@@ -109,6 +109,7 @@ export function resetScores() {
     scores = {};
     scores[symbols.player1] = 0;
     scores[symbols.player2] = 0;
+    scores['draw'] = 0;
     saveGameState(); // Save the reset immediately
 }
 
@@ -289,7 +290,7 @@ export function playTurn(row, col) {
     } else if (isBoardFull()) {
         gameWon = true;
         winner = 'draw';
-        // Note: No score increment for draws
+        incrementScore('draw'); // Increment draw counter
     } else {
         // Switch player (between player 1 and player 2 symbols)
         currentPlayer = (currentPlayer === player1Symbol) ? player2Symbol : player1Symbol;
@@ -331,7 +332,7 @@ export function loadGameState() {
         gameWon = gameState.gameWon || false;
         winner = gameState.winner || null;
         winningLine = gameState.winningLine || null;
-        scores = gameState.scores || { 'X': 0, 'O': 0 }; // Load scores or default
+        scores = gameState.scores || { 'X': 0, 'O': 0, 'draw': 0 }; // Load scores or default
         return true;
     }
     return false;

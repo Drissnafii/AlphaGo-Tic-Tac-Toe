@@ -184,18 +184,15 @@ export function updateScores() {
     // Update score display elements
     const scoreXElement = document.getElementById('score-x');
     const scoreOElement = document.getElementById('score-o');
+    const scoreDrawElement = document.getElementById('score-draw');
     const player1LabelElement = document.getElementById('player1-label');
     const player2LabelElement = document.getElementById('player2-label');
     
-    if (scoreXElement && scoreOElement) {
+    if (scoreXElement && scoreOElement && scoreDrawElement) {
         // Update scores based on current player symbols
-        if (symbols.player1 === 'X') {
-            scoreXElement.textContent = scores['X'] || 0;
-            scoreOElement.textContent = scores['O'] || 0;
-        } else {
-            scoreXElement.textContent = scores['X'] || 0;
-            scoreOElement.textContent = scores['O'] || 0;
-        }
+        scoreXElement.textContent = scores['X'] || 0;
+        scoreOElement.textContent = scores['O'] || 0;
+        scoreDrawElement.textContent = scores['draw'] || 0;
     }
     
     // Update player labels if they exist

@@ -11,17 +11,25 @@ body {
 
 .game-container {
     display: flex;
-    gap: 60px;
-    align-items: center;
-    max-width: 1200px;
+    gap: 40px;
+    align-items: flex-start;
+    max-width: 1400px;
     width: 100%;
+    justify-content: space-between;
 }
 
 .controls-panel {
     display: flex;
     flex-direction: column;
     gap: 25px;
-    width: 300px;
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.score-panel {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
     flex-shrink: 0;
 }
 
@@ -42,29 +50,57 @@ body {
     font-weight: 600;
 }
 
-.score-display {
+.score-blocks {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 15px;
 }
 
-.score-item {
+.score-block {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 16px;
-    color: #333;
-    font-weight: 500;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: white;
+    min-height: 50px;
+    transition: transform 0.2s ease;
 }
 
-.score-value {
-    background-color: #f5f5f5;
-    color: #333;
-    padding: 4px 12px;
-    border-radius: 15px;
+.score-block:hover {
+    transform: scale(1.02);
+}
+
+.x-block {
+    background-color: #818169;
+}
+
+.o-block {
+    background-color: #515f5f;
+}
+
+.draw-block {
+    background-color: #ff9800;
+}
+
+.score-symbol {
+    font-size: 24px;
     font-weight: 700;
-    min-width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+.score-number {
+    font-size: 28px;
+    font-weight: 700;
+    min-width: 50px;
     text-align: center;
 }
 
@@ -183,7 +219,6 @@ body {
     background-color: rgba(255, 255, 255, 0.95);
     padding: 12px 24px;
     border-radius: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 1000;
     font-weight: 500;
     white-space: nowrap;
@@ -406,13 +441,14 @@ body {
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .game-container {
         flex-direction: column;
+        align-items: center;
         gap: 30px;
     }
     
-    .controls-panel {
+    .controls-panel, .score-panel {
         width: 100%;
         max-width: 400px;
     }
@@ -420,5 +456,16 @@ body {
     #game-board {
         width: 350px;
         height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .controls-panel, .score-panel {
+        max-width: 300px;
+    }
+    
+    #game-board {
+        width: 300px;
+        height: 300px;
     }
 }
