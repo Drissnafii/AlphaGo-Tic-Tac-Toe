@@ -149,19 +149,22 @@ export function updateStatus() {
 }
 
 export function generateGameBoard(size) {
+    console.log('Generating game board with size:', size);
     const gameBoard = document.getElementById('game-board');
     
     gameBoard.innerHTML = '';
     
-    // Calculate cell size based on fixed board size
-    // Board is 400px x 400px with 10px padding on each side = 380px available space
-    // Gap between cells is 3px, so we need to account for (size-1) gaps
-    const availableSpace = 380;
-    const totalGapSpace = (size - 1) * 3; // 3px gap between cells
-    const cellSize = Math.floor((availableSpace - totalGapSpace) / size);
+    // Calculate cell size based on available space
+    // We want the grid to be centered, so calculate optimal cell size
+    const maxBoardSize = 560; // Leave some padding within the 600px container
+    const gap = 3; // Gap between cells
+    const totalGapSpace = (size - 1) * gap;
+    const cellSize = Math.floor((maxBoardSize - totalGapSpace) / size);
+    
+    console.log('Cell size calculated:', cellSize, 'for grid size:', size);
     
     // Calculate font size based on cell size (proportional scaling)
-    const fontSize = Math.max(Math.floor(cellSize * 0.6), 16); // Minimum 16px font
+    const fontSize = Math.max(Math.floor(cellSize * 0.6), 12); // Minimum 12px font for larger grids
     
     for (let i = 0; i < size * size; i++) {
         const cell = document.createElement('div');
@@ -172,8 +175,11 @@ export function generateGameBoard(size) {
         gameBoard.appendChild(cell);
     }
     
+    // Update the grid template to match the size and let CSS centering handle the rest
     gameBoard.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
     gameBoard.style.gridTemplateRows = `repeat(${size}, ${cellSize}px)`;
+    
+    console.log('Generated', size * size, 'cells for', size + 'x' + size, 'grid');
 }
 
 // Update score display

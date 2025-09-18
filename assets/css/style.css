@@ -140,11 +140,14 @@ body {
     gap: 3px;   
     background-color: #333;
     border: 5px solid #333;
-    width: 400px;
-    height: 400px;
+    width: 600px;
+    height: 600px;
     padding: 9px;
     box-sizing: border-box;
     border-radius: 10px;
+    justify-content: center;
+    align-content: center;
+    place-content: center;
 }
 
 .cell {
@@ -454,8 +457,8 @@ body {
     }
     
     #game-board {
-        width: 350px;
-        height: 350px;
+        width: 500px;
+        height: 500px;
     }
 }
 
@@ -465,7 +468,7 @@ body {
     }
     
     #game-board {
-        width: 300px;
-        height: 300px;
+        width: 450px;
+        height: 450px;
     }
 }

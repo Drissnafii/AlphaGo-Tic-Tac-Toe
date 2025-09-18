@@ -146,6 +146,7 @@ function initializeGame() {
     
     // Generate board based on current grid size
     const gridSize = getGridSize();
+    console.log('Initializing game with grid size:', gridSize);
     generateGameBoard(gridSize);
     
     // Setup event listeners
