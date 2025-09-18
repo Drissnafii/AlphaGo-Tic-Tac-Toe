@@ -8,7 +8,8 @@ import {
     getWinningLine, 
     getPlayerSymbols, 
     getCurrentPlayer, 
-    getKAlignment 
+    getKAlignment,
+    getScores
 } from './gameLogic.js';
 
 export function updateBoard() {
@@ -173,4 +174,33 @@ export function generateGameBoard(size) {
     
     gameBoard.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
     gameBoard.style.gridTemplateRows = `repeat(${size}, ${cellSize}px)`;
+}
+
+// Update score display
+export function updateScores() {
+    const scores = getScores();
+    const symbols = getPlayerSymbols();
+    
+    // Update score display elements
+    const scoreXElement = document.getElementById('score-x');
+    const scoreOElement = document.getElementById('score-o');
+    const player1LabelElement = document.getElementById('player1-label');
+    const player2LabelElement = document.getElementById('player2-label');
+    
+    if (scoreXElement && scoreOElement) {
+        // Update scores based on current player symbols
+        if (symbols.player1 === 'X') {
+            scoreXElement.textContent = scores['X'] || 0;
+            scoreOElement.textContent = scores['O'] || 0;
+        } else {
+            scoreXElement.textContent = scores['X'] || 0;
+            scoreOElement.textContent = scores['O'] || 0;
+        }
+    }
+    
+    // Update player labels if they exist
+    if (player1LabelElement && player2LabelElement) {
+        player1LabelElement.textContent = `Joueur 1 (${symbols.player1})`;
+        player2LabelElement.textContent = `Joueur 2 (${symbols.player2})`;
+    }
 }

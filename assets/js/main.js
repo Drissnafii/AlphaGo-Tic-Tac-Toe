@@ -1,4 +1,4 @@
-// from gameLogic module
+// Import functions from gameLogic module
 import { 
     playTurn, 
     restartGame, 
@@ -8,15 +8,17 @@ import {
     resizeBoard, 
     loadGameState, 
     getGridSize, 
-    getPlayerSymbols 
+    getPlayerSymbols,
+    resetScores
 } from './gameLogic.js';
 
-// from ui module
+// Import functions from ui module
 import { 
     updateBoard, 
     updateStatus, 
     generateGameBoard, 
-    clearWinningHighlight 
+    clearWinningHighlight,
+    updateScores
 } from './ui.js';
 
 // Initialize the game when the page loads
@@ -36,6 +38,7 @@ function handleCellClick(cellIndex) {
     if (moveSuccessful) {
         updateBoard();
         updateStatus();
+        updateScores(); // Update score display after each move
     }
 }
 
@@ -64,6 +67,13 @@ function handleSymbolChange() {
     
     setPlayerSymbol(selectedSymbol);
     updateStatus();
+    updateScores(); // Update scores display when symbols change
+}
+
+// Score reset button handler
+function handleScoreReset() {
+    resetScores();
+    updateScores(); // Update score display immediately
 }
 
 // K-alignment change
@@ -159,6 +169,12 @@ function initializeGame() {
         radio.addEventListener('change', handleSymbolChange);
     });
     
+    // Add score reset button event listener
+    const resetScoreBtn = document.getElementById('reset-score-btn');
+    if (resetScoreBtn) {
+        resetScoreBtn.addEventListener('click', handleScoreReset);
+    }
+    
     // Update grid size input to match current size
     const gridSizeInput = document.getElementById('grid-size-input');
     gridSizeInput.value = gridSize;
@@ -171,4 +187,5 @@ function initializeGame() {
     // Update display
     updateBoard();
     updateStatus();
+    updateScores(); // Initialize score display
 }

@@ -9,6 +9,23 @@
 <body>
     <div class="game-container">
         <div class="controls-panel">
+            <div class="score-board">
+                <h3>Tableau des Scores</h3>
+                <div class="score-display">
+                    <div class="score-item">
+                        <span id="player1-label">Joueur 1 (X)</span>: 
+                        <span id="score-x" class="score-value">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span id="player2-label">Joueur 2 (O)</span>: 
+                        <span id="score-o" class="score-value">0</span>
+                    </div>
+                </div>
+                <button id="reset-score-btn" class="score-reset-btn">
+                    Réinitialiser les Scores
+                </button>
+            </div>
+
             <div id="symbol-selection">
                 <label>Choisir le symbole du Joueur 1:</label>
                 <div class="symbol-options">

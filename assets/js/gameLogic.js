@@ -1,4 +1,5 @@
-// pure logic
+// pure logic - ES6 Module
+// Variables are private to this module
 let gridSize = 3; // Default 3x3
 let board = createEmptyBoard(gridSize);
 let currentPlayer = "X";
@@ -8,6 +9,7 @@ let kAlignment = 3; // Number of symbols needed in a row to win
 let gameWon = false; // Track if game is won
 let winner = null; // Track who won
 let winningLine = null; // Store winning line coordinates
+let scores = { 'X': 0, 'O': 0 }; // Track wins for each symbol
 
 // Private function
 function createEmptyBoard(size) {
@@ -84,6 +86,30 @@ export function getPlayerSymbols() {
 // Get winning line coordinates
 export function getWinningLine() {
     return winningLine;
+}
+
+// SCORE MANAGEMENT FUNCTIONS
+
+// Get current scores
+export function getScores() {
+    return { ...scores }; // Return a copy to prevent external modification
+}
+
+// Increment score for a player
+export function incrementScore(player) {
+    if (scores[player] !== undefined) {
+        scores[player]++;
+        saveGameState(); // Save immediately after score change
+    }
+}
+
+// Reset scores to zero
+export function resetScores() {
+    const symbols = getPlayerSymbols();
+    scores = {};
+    scores[symbols.player1] = 0;
+    scores[symbols.player2] = 0;
+    saveGameState(); // Save the reset immediately
 }
 
 // Check for k consecutive symbols in a row and return winning line - Private function
@@ -259,9 +285,11 @@ export function playTurn(row, col) {
     if (checkWin(currentPlayer)) {
         gameWon = true;
         winner = currentPlayer;
+        incrementScore(winner); // Increment score for the winner
     } else if (isBoardFull()) {
         gameWon = true;
         winner = 'draw';
+        // Note: No score increment for draws
     } else {
         // Switch player (between player 1 and player 2 symbols)
         currentPlayer = (currentPlayer === player1Symbol) ? player2Symbol : player1Symbol;
@@ -284,7 +312,8 @@ function saveGameState() {
         kAlignment: kAlignment,
         gameWon: gameWon,
         winner: winner,
-        winningLine: winningLine
+        winningLine: winningLine,
+        scores: scores // Save scores to localStorage
     };
     localStorage.setItem('ticTacToeGame', JSON.stringify(gameState));
 }
@@ -302,6 +331,7 @@ export function loadGameState() {
         gameWon = gameState.gameWon || false;
         winner = gameState.winner || null;
         winningLine = gameState.winningLine || null;
+        scores = gameState.scores || { 'X': 0, 'O': 0 }; // Load scores or default
         return true;
     }
     return false;
