@@ -123,13 +123,13 @@ export function updateStatus() {
     // Check if game is won or drawn
     if (gameStatus.gameWon) {
         if (gameStatus.winner === 'draw') {
-            statusElement.textContent = `🤝 Match nul! Toutes les cases sont remplies 🤝`;
+            statusElement.textContent = `🤝 Draw! Board is full 🤝`;
             statusElement.style.color = '#ff9800'; // Orange color for draw
         } else if (gameStatus.winner === symbols.player1) {
-            statusElement.textContent = `🎉 Joueur 1 (${gameStatus.winner}) gagne! 🎉`;
+            statusElement.textContent = `🎉 Player 1 (${gameStatus.winner}) wins! 🎉`;
             statusElement.style.color = '#2e7d32'; // Green color for win
         } else {
-            statusElement.textContent = `🎉 Joueur 2 (${gameStatus.winner}) gagne! 🎉`;
+            statusElement.textContent = `🎉 Player 2 (${gameStatus.winner}) wins! 🎉`;
             statusElement.style.color = '#2e7d32'; // Green color for win
         }
         statusElement.style.fontWeight = 'bold';
@@ -142,9 +142,9 @@ export function updateStatus() {
     
     // Show whose turn it is and k-alignment requirement
     if (currentPlayer === symbols.player1) {
-        statusElement.textContent = `Tour du Joueur 1 (${symbols.player1}) - Alignez ${k} symboles pour gagner`;
+        statusElement.textContent = `Player 1 (${symbols.player1}) - Get ${k} in a row to win`;
     } else {
-        statusElement.textContent = `Tour du Joueur 2 (${symbols.player2}) - Alignez ${k} symboles pour gagner`;
+        statusElement.textContent = `Player 2 (${symbols.player2}) - Get ${k} in a row to win`;
     }
 }
 
@@ -203,7 +203,7 @@ export function updateScores() {
     
     // Update player labels if they exist
     if (player1LabelElement && player2LabelElement) {
-        player1LabelElement.textContent = `Joueur 1 (${symbols.player1})`;
-        player2LabelElement.textContent = `Joueur 2 (${symbols.player2})`;
+        player1LabelElement.textContent = `Player 1 (${symbols.player1})`;
+        player2LabelElement.textContent = `Player 2 (${symbols.player2})`;
     }
 }
