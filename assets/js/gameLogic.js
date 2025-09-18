@@ -25,12 +25,12 @@ function createEmptyBoard(size) {
 
 // Private function
 function validateGridSize(size) {
-    return size >= 3 && size <= 6;
+    return size >= 3 && size <= 13;
 }
 
 // Private function
 function validateKAlignment(k) {
-    return k >= 3 && k <= gridSize;
+    return k >= 3 && k <= gridSize; 
 }
 
 
