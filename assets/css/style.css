@@ -374,6 +374,18 @@ body {
     transition: all 0.2s ease;
 }
 
+/* Hide number input spinners */
+#grid-size-input::-webkit-outer-spin-button,
+#grid-size-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#grid-size-input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
 #grid-size-input:focus {
     border-color: #4f8ef7;
     background-color: #333333;
@@ -393,6 +405,18 @@ body {
     color: #ffffff;
     outline: none;
     transition: all 0.2s ease;
+}
+
+/* Hide number input spinners */
+#k-alignment-input::-webkit-outer-spin-button,
+#k-alignment-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#k-alignment-input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 #k-alignment-input:focus {
