@@ -1,6 +1,14 @@
 # Jeu de Morpion Dynamique en JavaScript
 
-Ce projet est une implémentation d'un jeu de Morpion (Tic Tac Toe) dynamique et configurable, développé en JavaScript vanilla, HTML5 et CSS3. Il a été réalisé dans le cadre d'un cas pratique simulant une demande de l'entreprise PlayInnovate. L'application permet de personnaliser la taille de la grille (n x n) et le nombre de symboles à aligner pour gagner (k), tout en offrant une expérience utilisateur moderne et responsive.
+Ce projet est une implémentation moderne et évolutive du jeu de Morpion (Tic Tac Toe), développée en JavaScript vanilla avec une architecture modulaire ES6. Contrairement à la version classique 3×3, cette application permet aux joueurs de configurer entièrement leur expérience de jeu :
+
+- **Grille configurable** : Taille de grille de 3×3 jusqu'à 13×13
+- **Condition de victoire adaptable** : Nombre de symboles à aligner (k) personnalisable
+- **Architecture modulaire** : Code structuré avec séparation des préoccupations (gameLogic.js, ui.js, main.js)
+- **Persistance des données** : Sauvegarde automatique via localStorage
+- **Interface responsive** : Design adaptatif pour tous les appareils
+
+Développé dans le cadre d'un cas pratique pour l'entreprise fictive PlayInnovate, ce projet démontre une approche professionnelle du développement web moderne.
 
 ➡️ Accéder à la démo en ligne (Pensez à héberger votre projet sur GitHub Pages ou un service similaire et à mettre le lien ici)
 
@@ -11,8 +19,9 @@ Ce projet est une implémentation d'un jeu de Morpion (Tic Tac Toe) dynamique et
 - [Contexte du Projet](#contexte-du-projet)
 - [Fonctionnalités Principales](#fonctionnalités-principales)
 - [Technologies et Outils](#technologies-et-outils)
-- [Installation et Lancement](#installation-et-lancement)
 - [Structure du Projet](#structure-du-projet)
+- [Implémentation Technique](#implémentation-technique)
+- [Installation et Lancement](#installation-et-lancement)
 - [Planification et Gestion](#planification-et-gestion)
 - [Critères de performance respectés](#critères-de-performance-respectés)
 - [Auteur](#auteur)
@@ -23,35 +32,63 @@ L'entreprise fictive PlayInnovate, une start-up spécialisée dans le gaming en 
 
 ## Fonctionnalités Principales
 
-- **Grille de jeu 100% configurable** : Les joueurs peuvent choisir la taille de la grille (n x n) avant de commencer.
+### Configuration de Jeu Avancée
 
-- **Condition de victoire adaptable** : Le nombre de symboles à aligner pour gagner (k) est également personnalisable.
+- **Grille de jeu 100% configurable** : Taille de grille de 3×3 jusqu'à 13×13 avec génération dynamique des cellules
+- **Condition de victoire adaptable** : Nombre de symboles à aligner (k) de 3 jusqu'à la taille de la grille
+- **Choix des symboles** : Les joueurs peuvent choisir entre X/O comme symbole de départ
 
-- **Logique de jeu pour deux joueurs** : Le joueur 1 (X) commence, puis les tours alternent.
+### Expérience de Jeu
 
-- **Détection automatique du vainqueur** : L'algorithme vérifie les alignements horizontaux, verticaux et sur les deux diagonales.
+- **Logique de jeu pour deux joueurs** : Alternance automatique des tours avec Player 1 qui commence toujours
+- **Détection automatique du vainqueur** : Algorithme optimisé vérifiant les alignements horizontaux, verticaux et diagonaux
+- **Gestion des matchs nuls** : Détection automatique quand la grille est pleine sans vainqueur
+- **Animation de victoire** : Mise en surbrillance progressive de la ligne gagnante avec effets hover
 
-- **Gestion des matchs nuls** : Le jeu déclare une égalité si la grille est remplie sans qu'un vainqueur ne soit désigné.
+### Interface Utilisateur
 
-- **Persistance des données** : Les scores ainsi que les préférences de jeu (n, k, symboles des joueurs) sont sauvegardés dans le localStorage du navigateur.
+- **Génération dynamique de la grille** : Adaptation automatique de la taille des cellules selon la configuration
+- **Affichage en temps réel** : 
+  - Joueur actuel et condition de victoire (k symboles à aligner)
+  - Statut de fin de partie avec messages colorés
+  - Tableau des scores persistant
+- **Contrôles intuitifs** :
+  - Bouton "New Game" pour recommencer avec les mêmes paramètres
+  - Bouton "Reset Scores" pour remettre à zéro les compteurs
+  - Inputs séparés pour grid size et k-alignment avec validation
 
-- **Interface intuitive** :
-  - Affichage clair du joueur dont c'est le tour.
-  - Mise en surbrillance de la ligne gagnante.
-  - Un bouton pour recommencer une partie avec les mêmes paramètres.
-  - Un bouton pour réinitialiser les scores.
+### Persistance et Performance
 
-- **Menu de paramètres complet** : Permet aux joueurs de choisir leurs symboles (par exemple, 🔱 et 🔥) et de configurer n et k.
-
-- **Design Responsive** : L'interface est conçue pour être fluide et agréable sur ordinateur, tablette et mobile.
+- **Sauvegarde automatique** : État complet du jeu sauvegardé via localStorage (plateau, scores, préférences)
+- **Chargement intelligent** : Restauration automatique de la partie en cours au rechargement de la page
+- **Gestion des scores** : Comptage séparé des victoires pour chaque symbole et des matchs nuls
+- **Responsive Design** : Interface adaptative pour ordinateur, tablette et mobile avec calculs dynamiques
 
 ## Technologies et Outils
 
-- **HTML5** : Utilisé pour une structure sémantique et accessible.
+### Architecture Technique
 
-- **CSS3** : Pour le design moderne, les animations et la responsivité (via Flexbox/Grid).
+Le projet adopte une architecture modulaire basée sur le principe de **Séparation des Préoccupations** (Separation of Concerns) pour garantir la maintenabilité et la clarté du code :
 
-- **JavaScript (Vanilla)** : L'ensemble de la logique de jeu, la manipulation du DOM et la gestion des événements sont codés sans aucun framework.
+- **HTML5** : Structure sémantique et accessible de l'application
+- **CSS3** : Design moderne avec Flexbox/Grid, animations et responsive design
+- **JavaScript ES6+ Modules** : Architecture modulaire sans dépendances externes
+
+### Structure Modulaire
+
+#### `gameLogic.js` (Le Modèle)
+- **Responsabilité** : Gérer l'état complet du jeu et les règles métier
+- **Fonctionnalités** : Gestion de l'état (`board`, `currentPlayer`, `gridSize`, `kAlignment`), algorithme de détection de victoire n×k, persistance localStorage
+- **Découplage** : Entièrement indépendant du DOM
+
+#### `ui.js` (La Vue)
+- **Responsabilité** : Gérer toutes les interactions avec le DOM
+- **Fonctionnalités** : Génération dynamique de la grille, mise à jour visuelle, animations de victoire, affichage des scores
+- **Rendu** : Adaptation automatique de la taille des cellules selon la grille
+
+#### `main.js` (Le Contrôleur)
+- **Responsabilité** : Orchestrer la communication entre la logique et l'interface
+- **Fonctionnalités** : Initialisation, gestion des événements, coordination des modules
 
 ## Installation et Lancement
 
@@ -66,27 +103,76 @@ git clone https://github.com/Drissnafii/AlphaGo-Tic-Tac-Toe.git
 2. Naviguez jusqu'au dossier du projet :
 
 ```bash
-cd AlphaGo-Tic-Tac-Toe.git
+cd AlphaGo-Tic-Tac-Toe
 ```
 
 3. Ouvrez le fichier `index.html` directement dans votre navigateur web.
 
 ## Structure du Projet
 
-L'arborescence des fichiers a été pensée pour une organisation claire et une séparation des préoccupations (HTML/CSS/JS), facilitant la maintenance et la compréhension du code.
+L'arborescence des fichiers suit une architecture modulaire claire avec séparation des préoccupations, facilitant la maintenance et la compréhension du code.
 
 ```
-├── index.html                # Fichier principal de la structure HTML
+AlphaGo-Tic-Tac-Toe/
+├── index.html                    # Point d'entrée de l'application
+├── README.md                     # Documentation du projet
 ├── assets/
 │   ├── css/
-│   │   └── style.css         # Styles de l'application
-│   └── js/
-│       ├── main.js           # Script principal (gestion des événements, initialisation)
-│       ├── gameLogic.js      # Module pour la logique du jeu (vérification victoire, etc.)
-│       └── ui.js             # Module pour la manipulation de l'interface (DOM)
-│
-└── README.md                 # Documentation du projet
+│   │   └── style.css            # Styles de l'application (responsive design)
+│   ├── images/                  # Ressources visuelles du projet
+│   │   ├── cellForEach.png      # Documentation visuelle
+│   │   └── matrice.png          # Aperçu du jeu
+│   └── js/                      # Modules JavaScript ES6
+│       ├── main.js              # Contrôleur principal (orchestrateur)
+│       ├── gameLogic.js         # Logique métier (état du jeu, règles)
+│       └── ui.js                # Gestion de l'interface (DOM manipulation)
+└── Docs/
+    └── projectDocs.md           # Documentation technique détaillée
 ```
+
+### Organisation Modulaire
+
+- **`/assets/js/`** : Modules JavaScript avec imports/exports ES6
+- **`/assets/css/`** : Styles centralisés avec design responsive
+- **`/assets/images/`** : Ressources visuelles et documentation
+- **`/Docs/`** : Documentation technique complète
+
+## Implémentation Technique
+
+### Algorithme de Détection de Victoire (n,k)
+
+Le cœur algorithmique du projet est la fonction `checkWin(symbol)` qui gère la détection de victoire pour une grille n×n avec k symboles à aligner :
+
+1. **Vérification Horizontale** : Parcours de chaque ligne pour détecter k symboles consécutifs
+2. **Vérification Verticale** : Analyse des colonnes avec la même logique
+3. **Vérification Diagonale** : Diagonales principales (↘) avec incrémentation simultanée des indices
+4. **Vérification Anti-Diagonale** : Diagonales secondaires (↙) avec indices opposés
+
+L'algorithme retourne les coordonnées de la ligne gagnante pour l'animation visuelle.
+
+### Persistance des Données
+
+**localStorage Implementation :**
+- `saveGameState()` : Sérialisation JSON de l'état complet (plateau, joueur actuel, scores, préférences)
+- `loadGameState()` : Désérialisation et restauration automatique au chargement
+- **Données sauvegardées** : État du plateau, joueur courant, taille de grille, k-alignment, scores
+
+### Architecture ES6 Modules
+
+**Import/Export Pattern :**
+```javascript
+// gameLogic.js - Exports des fonctions métier
+export { playTurn, getGameStatus, getBoard, ... }
+
+// main.js - Orchestration des modules  
+import { playTurn, ... } from './gameLogic.js';
+import { updateBoard, ... } from './ui.js';
+```
+
+**Avantages :**
+- Encapsulation des données (variables privées au module)
+- API publique claire via exports sélectifs
+- Découplage total entre logique métier et interface
 
 ## Planification et Gestion
 
@@ -96,12 +182,20 @@ La planification des tâches, le suivi des fonctionnalités et la gestion du tem
 
 ## Critères de performance respectés
 
-- **Manipulation du DOM** : L'interface est entièrement générée et mise à jour dynamiquement en JavaScript.
+- **Architecture ES6 Modules** : Code structuré en modules avec imports/exports pour une maintenance optimale
 
-- **Stockage local (localStorage)** : Utilisé efficacement pour la persistance des scores et des préférences.
+- **Manipulation dynamique du DOM** : Génération automatique de la grille avec adaptation responsive de la taille des cellules
 
-- **Structure HTML sémantique** : Utilisation de balises appropriées pour une meilleure accessibilité et un meilleur référencement.
+- **Stockage local (localStorage)** : Persistance complète de l'état du jeu, des scores et des préférences utilisateur
 
-- **Modularité du code** : Le code JavaScript est structuré en fonctions et modules distincts pour la logique, l'interface et la gestion des données.
+- **Structure HTML sémantique** : Utilisation de balises appropriées pour l'accessibilité et le référencement
 
-- **Bonnes pratiques (Clean Code)** : Respect des conventions de nommage (camelCase pour JS), code commenté et aéré pour une lisibilité optimale.
+- **Algorithme optimisé (n,k)** : Détection de victoire efficace pour grilles variables avec complexité contrôlée
+
+- **Séparation des préoccupations** : Architecture MVC avec modules distincts (Modèle, Vue, Contrôleur)
+
+- **Bonnes pratiques (Clean Code)** :
+  - Conventions de nommage cohérentes (camelCase JS, kebab-case CSS)
+  - Code commenté et documenté
+  - Validation des entrées utilisateur
+  - Gestion d'erreurs appropriée
