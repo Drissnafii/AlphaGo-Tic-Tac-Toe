@@ -10,7 +10,7 @@ Ce projet est une implémentation moderne et évolutive du jeu de Morpion (Tic T
 
 Développé dans le cadre d'un cas pratique pour l'entreprise fictive PlayInnovate, ce projet démontre une approche professionnelle du développement web moderne.
 
-➡️ Accéder à la démo en ligne (Pensez à héberger votre projet sur GitHub Pages ou un service similaire et à mettre le lien ici)
+➡️ [Accéder à la démo en ligne](https://drissnafii.github.io/AlphaGo-Tic-Tac-Toe/)
 
 ![Aperçu du jeu](assets/images/matrice.png)
 

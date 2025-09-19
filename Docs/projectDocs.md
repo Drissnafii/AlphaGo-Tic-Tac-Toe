@@ -1,7 +1,3 @@
-Bien sûr. Voici la documentation technique complète de votre projet, fusionnée, nettoyée et organisée de manière professionnelle.
-
----
-
 # **Documentation Technique : Jeu Morpion Dynamique**
 
 | **Version** | 1.0.0 |
