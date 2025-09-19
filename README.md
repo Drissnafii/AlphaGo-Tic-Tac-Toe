@@ -173,12 +173,13 @@ import { updateBoard, ... } from './ui.js';
 - Encapsulation des données (variables privées au module)
 - API publique claire via exports sélectifs
 - Découplage total entre logique métier et interface
-
 ## Planification et Gestion
 
 La planification des tâches, le suivi des fonctionnalités et la gestion du temps ont été réalisés à l'aide de JIRA.
 
-➡️ Accéder au tableau de planification JIRA
+➡️ [Accéder au tableau de planification JIRA](https://drissnafii.atlassian.net/jira/software/projects/JMD/boards/1)
+
+![Aperçu du tableau JIRA](assets/images/JIRA_Board.png)
 
 ## Critères de performance respectés
 
