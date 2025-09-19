@@ -12,7 +12,7 @@ Développé dans le cadre d'un cas pratique pour l'entreprise fictive PlayInnova
 
 ➡️ [Accéder à la démo en ligne](https://drissnafii.github.io/AlphaGo-Tic-Tac-Toe/)
 
-![Aperçu du jeu](assets/images/matrice.png)
+![Aperçu du jeu](assets/images/demo.png)
 
 ## Table des matières
 
