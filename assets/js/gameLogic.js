@@ -115,96 +115,44 @@ export function resetScores() {
 
 // Check for k consecutive symbols in a row and return winning line - Private function
 function checkWin(symbol) {
-    // Check rows
-    for (let row = 0; row < gridSize; row++) {
-        for (let col = 0; col <= gridSize - kAlignment; col++) {
-            let count = 0;
-            for (let i = 0; i < kAlignment; i++) {
-                if (board[row][col + i] === symbol) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-            if (count === kAlignment) {
-                winningLine = {
-                    startRow: row,
-                    startCol: col,
-                    direction: 'horizontal',
-                    length: kAlignment
-                };
-                return true;
-            }
-        }
-    }
+    const directions = [[0,1], [1,0], [1,1], [1,-1]]; // horizontal, vertical, diagonal, anti-diagonal
+    const directionNames = ['horizontal', 'vertical', 'diagonal', 'anti-diagonal'];
     
-    // Check columns
-    for (let col = 0; col < gridSize; col++) {
-        for (let row = 0; row <= gridSize - kAlignment; row++) {
-            let count = 0;
-            for (let i = 0; i < kAlignment; i++) {
-                if (board[row + i][col] === symbol) {
-                    count++;
-                } else {
-                    break;
+    // Check each starting position on the board
+    for (let startRow = 0; startRow < gridSize; startRow++) {
+        for (let startCol = 0; startCol < gridSize; startCol++) {
+            // Check each direction from this starting position
+            for (let dirIndex = 0; dirIndex < directions.length; dirIndex++) {
+                const [dr, dc] = directions[dirIndex];
+                let count = 0;
+                
+                // Check k consecutive positions in this direction
+                for (let i = 0; i < kAlignment; i++) {
+                    const newRow = startRow + i * dr;
+                    const newCol = startCol + i * dc;
+                    
+                    // Check if position is within bounds
+                    if (newRow >= 0 && newRow < gridSize && newCol >= 0 && newCol < gridSize) {
+                        if (board[newRow][newCol] === symbol) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        break; // Out of bounds
+                    }
                 }
-            }
-            if (count === kAlignment) {
-                winningLine = {
-                    startRow: row,
-                    startCol: col,
-                    direction: 'vertical',
-                    length: kAlignment
-                };
-                return true;
-            }
-        }
-    }
-    
-    // _________________________________________________________________
-    // Check main diagonal (top-left to bottom-right)
-    for (let row = 0; row <= gridSize - kAlignment; row++) {
-        for (let col = 0; col <= gridSize - kAlignment; col++) {
-            let count = 0;
-            for (let i = 0; i < kAlignment; i++) {
-                if (board[row + i][col + i] === symbol) {
-                    count++;
-                } else {
-                    break;
+                
+                // If we found k consecutive symbols, we have a winner
+                if (count === kAlignment) {
+                    winningLine = {
+                        startRow: startRow,
+                        startCol: startCol,
+                        direction: directionNames[dirIndex],
+                        length: kAlignment
+                    };
+                    return true;
                 }
-            }
-            if (count === kAlignment) {
-                winningLine = {
-                    startRow: row,
-                    startCol: col,
-                    direction: 'diagonal',
-                    length: kAlignment
-                };
-                return true;
-            }
-        }
-    }
-    
-    // _________________________________________________________________
-    // Check anti-diagonal (top-right to bottom-left)
-    for (let row = 0; row <= gridSize - kAlignment; row++) {
-        for (let col = kAlignment - 1; col < gridSize; col++) {
-            let count = 0;
-            for (let i = 0; i < kAlignment; i++) {
-                if (board[row + i][col - i] === symbol) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-            if (count === kAlignment) {
-                winningLine = {
-                    startRow: row,
-                    startCol: col,
-                    direction: 'anti-diagonal',
-                    length: kAlignment
-                };
-                return true;
             }
         }
     }
